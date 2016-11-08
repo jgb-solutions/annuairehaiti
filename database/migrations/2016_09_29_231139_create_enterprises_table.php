@@ -13,7 +13,7 @@ public function up()
       $table->string('slug');
       $table->integer('telephone')->unsigned();
       $table->integer('fax')->unsigned();
-      $table->string('email')();
+      $table->string('email');
       $table->string('website');
       $table->string('address')->index();
       $table->mediumText('details');
