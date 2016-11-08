@@ -159,7 +159,6 @@ return [
         /*
         * AH Service Providers
         */
-        Snowfire\Beautymail\BeautymailServiceProvider::class,
         App\Providers\ComposerServiceProvider::class
 
     ],

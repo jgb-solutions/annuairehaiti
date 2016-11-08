@@ -1,4 +1,4 @@
-<section class="sponsors bg-white">
+{{-- <section class="sponsors bg-white">
    <div class="container">
       <h3 class="text-center">
          <span class="fa fa-heart"></span>
@@ -24,4 +24,4 @@
          <a href="{{ AH::route('contact') }}">@lang('text.pages.contact')</a>.
       </h3>
  	</div>
-</section>
+</section> --}}

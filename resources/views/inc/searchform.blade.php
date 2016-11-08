@@ -21,7 +21,9 @@
  	<div class="results" v-show="results.length" style="position:relative">
  		<ul class="list-group" style="position:absolute;width:100%;z-index:2">
  			<li v-for="enterprise in results" class="list-group-item">
- 				<a :href="enterprise.url" style="display:block">@{{ enterprise.name }}</a>
+ 				<a
+                        :href="enterprise.url"
+                        style="display:block;font-weight: bold;font-size: 1.2em;">@{{ enterprise.name }}</a>
  			</li>
  		</ul>
  	</div>
