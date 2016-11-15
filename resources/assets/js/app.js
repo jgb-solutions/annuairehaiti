@@ -1,128 +1,63 @@
+import messages from './locale/fr';
+import Vue from 'vue';
+import VeeValidate, { Validator } from 'vee-validate';
+
+Vue.use(VeeValidate);
+
+// Validator.updateDictionary({
+// 	fr: {
+// 		mesages: {
+// 			email: (field) => 'Some English message'
+// 		}
+// 	}
+// });
+
 (function( $ ) {
-	var $ahSearchForm 	= $('#ahSearchForm'),
-		$searchArea 	= $('#search-area'),
-		$input 					= $ahSearchForm.find('input#query'),
-		$ahSearchResults		= $('#ahSearchResults');
-		$ahSearchModal 		= $('#ahSearchModal');
+	// let $ahSearchForm 	= $('#ahSearchForm'),
+	let searchArea = $('#search-area');
 
-	$('li.searchAnchor a').on('click', function(e) {
+	$('li.searchAnchor a').on('click', (e) => {
 		e.preventDefault();
 
-		// $ahSearchModal.modal()
-			// .on('shown.bs.modal', function() {
-			// 	ahSearchS = $(this).find('input#query');
-			// 	ahSearchS.focus();
-			// });
-		$searchArea.slideToggle()
+		searchArea.slideToggle()
 	});
 
+})(jQuery);
 
-/*
-* Contact Form
-*/
-	var form = $('form#jqueryForm'),
-		results = $('#results'),
-		notice = '',
-		$sucFail,
-		$envoyer = '<span class="glyphicon glyphicon-send"></span>';
+// // Vue Bootstraping
 
-	$( document ).on('submit', 'form#jqueryForm', function(e) {
+// // <input v-el="avatar" type="file" name="avatar" id="avatar" v-on="change:upload">
+// // methods: {
+// //     upload: function(e) {
+// //         e.preventDefault();
+// //         var files = this.$$.avatar.files;
+// //         var data = new FormData();
+// //         // for single file
+// //         data.append('avatar', files[0]);
+// //        // Or for multiple files you can also do
+// //         //  _.each(files, function(v, k){
+// //         //    data.append('avatars['+k+']', v);
+// //        // });
 
-		e.preventDefault();
+// //         this.$http.post('/avatars/upload', data, function (data, status, request) {
+// //               //handling
+// //         }).error(function (data, status, request) {
+// //              //handling
+// //         });
+// //     }
+// // }
 
-		var $this = $(this),
-			$name = $this.find('#name'),
-			$email = $this.find('#email'),
-			$subject = $this.find('#subject'),
-			$message = $this.find('textarea#message');
+const $http = axios.create({
+  	headers: {
+  		'X-Requested-With': 'XMLHttpRequest',
+  		'X-CSRF-TOKEN': document.querySelector('#token').getAttribute('value')
+ 	}
+});
 
-		if ( $.trim( $name.val() ) === '' ) {
-			notice = 1;
-			$name.next().show();
-		} else {
-			$name.next().hide();
-		}
-
-		if ( $.trim( $email.val() ) === '' ) {
-			notice = 1;
-			$email.next().show();
-		} else {
-			$email.next().hide();
-		}
-
-		if ( $.trim( $subject.val() ) === '' ) {
-			notice = 1;
-			$subject.next().show();
-		} else {
-			$subject.next().hide();
-		}
-
-		if ( $.trim( $message.val() ) === '' ) {
-			notice = 1;
-			$message.next().show();
-		} else {
-			$message.next().hide();
-		}
-
-		if ( notice === 0 ) {
-
-			$('span.error').hide();
-
-			results.html('');
-
-			$this.find('button[type=submit]').text(' En train d\'envoyer...').prepend( $envoyer );
-
-			var data = $this.serialize();
-
-			$.post( AH_JS.ajax_url + '?action=ah_contact_form', data, function( data ) {
-
-				$this.slideUp('slow');
-
-				var anchor = $('<button></button>', {
-					'class': 'btn btn-success',
-					'id'	 : 'resetForm',
-					'text' : 'Envoyer un autre message'
-				});
-
-				anchor.prepend( $envoyer + ' ');
-
-				if ( 1 === parseInt( data ) ) {
-					$data = '<h4>E-mail envoyé avec succès!</h4>';
-					$sucFail = '<div class="bg-success left-content col-sm-12 text-center"></div>'
-				}
-				else if ( 0 === parseInt( data ) ) {
-					$data = '<h4>Echec d\'envoi de l\'e-mail</h4>';
-					$sucFail = '<div class="bg-danger left-content col-sm-12 text-center"></div>'
-				}
-
-				$pSuc = $( $sucFail ).html( $data ).append( anchor );
-				results.html( $pSuc ).show();
-
-				$this.find('button[type=submit]').text(' Envoyer').prepend( $envoyer );
-
-			});
-		} else {
-			// results.html( '<p class="text-danger">' + notice + '</p>' );
-			// $('span.error').show();
-			notice = 0;
-		}
-
-	});
-
-	$( document ).on('click', '#resetForm', function(e) {
-		form[0].reset();
-		form.slideDown('slow', function() {
-			results.fadeOut();
-			$(this).find('input')[0].focus();
-		});
-
-		e.preventDefault();
-	});
-})( jQuery );
-
+Vue.prototype.$http = $http;
 
 // Vue Search
-var searchForm = new Vue({
+let searchForm = new Vue({
 	el: '#ahSearchForm',
 
 	data: {
@@ -133,39 +68,60 @@ var searchForm = new Vue({
 	},
 
 	methods: {
-		search: function() {
-			vm = this;
+		search () {
+			let vm = this;
 
-			if (this.searchTerm.length > 2) {
-				$.ajax({
-					url: ah.searchUrl,
-					dataType: 'json',
-					data: {q: this.searchTerm},
+			if (vm.searchTerm.length > 2) {
+				vm.$http.get(ah.searchUrl, {
+					params: {q: vm.searchTerm},
 				})
-				.done(function(response) {
-					if (response.data.length > 0) {
+				.then(function(response) {
+					console.log('object', vm);
+					console.log(response);
+					let data = response.data.data;
+
+					if (data.length > 0) {
 						vm.loading = true;
 						vm.noResults = false;
-						vm.results = response.data;
-						// console.log(vm.results);
+						vm.results = data;
+						vm.loading = false;
 					} else {
 						vm.results = [];
 						vm.noResults = true;
 						console.log('no results');
 					}
 				})
-				.fail(function(error) {
+				.catch(function(error) {
 					console.log("error: " + error);
-				})
-				.complete(function() {
-					vm.loading = false;
-					console.log('complete');
 				});
 			} else {
 				this.results = [];
-				vm.noResults = false;
+				this.noResults = false;
 
 			}
 		}
 	},
+});
+
+
+let contactForm = new Vue({
+	el: '#contactForm',
+
+	data: {
+		sending: false
+	},
+
+	methods: {
+		validateBeforeSubmit: function (e) {
+			this.$validator.validateAll();
+
+            if (this.errors.any()) {
+                e.preventDefault();
+            }
+		}
+	},
+
+	created () {
+        this.$validator.setLocale('fr'); // Switch locale for this instance.
+    }
 });

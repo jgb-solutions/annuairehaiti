@@ -1,19 +1,19 @@
-<script src="{{ AH::asset(elixir('js/all.js')) }}"></script>
+<script>
+	window.ah = {searchUrl: '{{ AH::route('search') }}'};
+</script>
 
-@unless ( App::isLocal() )
+<script src="{{ AH::asset(elixir('js/vendor.js')) }}"></script>
+<script src="{{ AH::asset(elixir('js/app.js')) }}"></script>
+
+{{--@unless ( App::isLocal() )--}}
 
 	{{-- Facebook Page Plugin --}}
-	@include('inc.fb-script')
+	{{--@include('inc.fb-script')--}}
 
 	{{-- Google Analytics --}}
 	{{-- @include('inc.ga') --}}
 
-@endunless
+{{--@endunless--}}
 
-<script>
-	window.ah = {
-		searchUrl: '{{ AH::route('search') }}'
-	};
-</script>
 @section('scripts')
 @show

@@ -105,6 +105,8 @@ class EnterprisesController extends Controller
 				->withMessage(trans('messages.enterprises.created'))
 				->withStatus('success');
 		}
+
+		Cache::forget('pages.home');
 	}
 
 	public function getEditForm(Enterprise $enterprise)
@@ -165,6 +167,7 @@ class EnterprisesController extends Controller
 
 		$enterprise->save();
 
+		Cache::forget('pages.home');
 		Cache::forget($key);
 		Cache::forget('allSponsors');
 

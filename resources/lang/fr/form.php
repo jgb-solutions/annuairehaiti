@@ -1,6 +1,7 @@
 <?php
 
 return [
+	'name' => 'Votre nom complet',
 	'account' => [
 		'firstname' => 'Votre Prenom',
 		'lastname' => 'Votre Nom',
