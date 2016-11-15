@@ -48,7 +48,7 @@ class AH
 		$imgSize = [
 			'thumbs' 	=> config('site.image_upload_path') .'/thumbs/',
 			'images' 	=> config('site.image_upload_path') .'/',
-			'show'  		=> config('site.image_upload_path') .'/show/',
+			'show'  	=> config('site.image_upload_path') .'/show/',
 			'tiny' 		=> config('site.image_upload_path') .'/thumbs/tiny/',
 			'profile' 	=> config('site.image_upload_path') .'/thumbs/profile/',
 			'null'		=> ''
@@ -60,7 +60,7 @@ class AH
 			return asset($relativeUrl);
 		}
 
-		$cdnUrl = 'https://cdn.annuairehaiti.com/';
+		$cdnUrl = 'https://cdn.annuairehaiti.com';
 
 		return url($cdnUrl . $relativeUrl);
 	}
