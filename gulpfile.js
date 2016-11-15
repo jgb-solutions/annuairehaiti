@@ -12,7 +12,7 @@ elixir(function(mix) {
    // .copy('node_modules/axios/dist/axios.min.js', 'resources/assets/js/vendor/axios.js')
    // .copy('node_modules/vee-validate/dist/vee-validate.min.js', 'resources/assets/js/vendor/vee-validate.js')
 
-   // .less('style.less', 'public/css/app.css')
+   .less('style.less', 'public/css/app.css')
 
    // .jshint([
    //    jsAssets + 'app.js'
