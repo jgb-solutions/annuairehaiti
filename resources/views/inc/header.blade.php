@@ -4,7 +4,7 @@
     <div class="container">
         <header>
         <h1 class="text-center">
-            <a href="{{ AH::asset(config('site.url')) }}" rel="home"
+            <a href="{{ AH::route(config('site.url')) }}" rel="home"
             	title="{{ config('site.name') }}">
                 	<img src="{{ AH::asset(config('site.banner_url'))}}" height="100">
             </a>
