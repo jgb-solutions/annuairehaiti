@@ -31,14 +31,14 @@ class EnterprisesController extends Controller
 		return view('enterprises.index', compact('enterprises'));
 	}
 
-	public function show($slug, $id)
+	public function show($slug)
 	{
-		$key = 'enterprise_' . $slug . $id;
+		$key = 'enterprise_' . $slug;
 
-		$data = Cache::rememberForever($key, function() use ($id) {
+		$data = Cache::rememberForever($key, function() use ($slug) {
 			$enterprise = Enterprise::with(
 				'category', 'department', 'city', 'town'
-			)->findOrFail($id);
+			)->bySlug($slug)->first();
 
 			$related = Enterprise::related($enterprise)->get();
 
@@ -129,12 +129,12 @@ class EnterprisesController extends Controller
 
 	public function update(UpdateEnterpriseRequest $request, Enterprise $enterprise)
 	{
-		$key = 'enterprise_' . $enterprise->slug . $enterprise->id;
+		$key = 'enterprise_' . $enterprise->slug;
 
 		$enterprise->name 			= $request->name;
-		$enterprise->slug				= str_slug($request->name);
+		$enterprise->slug			= str_slug($request->name);
 		$enterprise->telephone 		= $request->telephone;
-		$enterprise->fax 				= $request->fax;
+		$enterprise->fax 			= $request->fax;
 		$enterprise->email 			= $request->email;
 		$enterprise->website 		= $request->website;
 		$enterprise->address 		= $request->address;
@@ -145,15 +145,15 @@ class EnterprisesController extends Controller
 		$enterprise->details 		= $request->details;
 		$enterprise->facebook 		= $request->facebook;
 		$enterprise->twitter 		= $request->twitter;
-		$enterprise->google 			= $request->google;
-		$enterprise->map 				= $request->map;
+		$enterprise->google 		= $request->google;
+		$enterprise->map 			= $request->map;
 		$enterprise->featured 		= $request->featured ? 1 : 0;
 
 		if ($request->hasFile('logo')) {
 			$uploadedLogo = AH::store($request->file('logo'));
 
 			if ($uploadedLogo->success) {
-				$enterprise->logo		= $uploadedLogo->name;
+				$enterprise->logo = $uploadedLogo->name;
 			}
 		}
 
@@ -173,6 +173,23 @@ class EnterprisesController extends Controller
 
 		return redirect($enterprise->url)
 			->withMessage(trans('messages.enterprises.updated'))
+			->withStatus('success');
+	}
+
+	public function destroy(Enterprise $enterprise)
+	{
+		$key = 'enterprise_' . $enterprise->slug;
+
+		$this->authorize('destroy', $enterprise);
+
+		$enterprise->delete();
+
+		Cache::forget('pages.home');
+		Cache::forget($key);
+		Cache::forget('allSponsors');
+
+		return redirect('/')
+			->withMessage(trans('messages.enterprises.deleted'))
 			->withStatus('success');
 	}
 }

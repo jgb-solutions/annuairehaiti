@@ -93,8 +93,9 @@ class Enterprise extends Model
 
 	public function getUrlAttribute()
 	{
-		return AH::route('enterprise.show', [$this->slug, $this->id]);
+		return AH::route('enterprise.show', [$this->slug]);
 	}
+
 	public function getEditUrlAttribute()
 	{
 		return AH::route('enterprise.edit', $this->id);
@@ -118,5 +119,10 @@ class Enterprise extends Model
 	public function scopeFeatured($query)
 	{
 		$query->where('featured', 1);
+	}
+
+	public function scopeBySlug($query, $slug)
+	{
+		$query->whereSlug($slug);
 	}
 }

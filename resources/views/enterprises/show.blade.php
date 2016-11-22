@@ -12,14 +12,23 @@
 
         <h2 class="text-center business-title">
             {{ $enterprise->name }}
-            {!! Auth::check() ?
-                "<small>
-                    <a href='$enterprise->editUrl'>
-                        <i class='fa fa-edit'></i>
-                    </a>
-                </small>" :''
-            !!}
         </h2>
+        <div class="text-center">
+            @if (Auth::check())
+                <form method="POST" action="{{ $enterprise->deleteUrl }}">
+                    {{ csrf_field() }}
+                    {{ method_field('DELETE') }}
+                    <a href="{{$enterprise->editUrl}}" class="btn btn-default"><i class="fa fa-edit"></i></a>
+                    <button type="submit"
+                        class="btn btn-danger"
+                        onclick="return confirm('Êtes-vous sûr?')"
+                        title="Effacer la catégorie {{ $enterprise->name }}">
+                        <i class="fa fa-trash"></i>
+                    </button>
+                </form>
+                <br>
+            @endif
+        </div>
         <div class="row">
             <img
                 class="img-responsive"

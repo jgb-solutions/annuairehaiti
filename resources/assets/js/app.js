@@ -1,28 +1,19 @@
+import jQueryScript from './jquery.js';
 import messages from './locale/fr';
 import Vue from 'vue';
 import VeeValidate, { Validator } from 'vee-validate';
 
+// jQuery stuff
+jQueryScript(jQuery);
+
+// Vue stuff
 Vue.use(VeeValidate);
 
-// Validator.updateDictionary({
-// 	fr: {
-// 		mesages: {
-// 			email: (field) => 'Some English message'
-// 		}
-// 	}
-// });
-
-(function( $ ) {
-	// let $ahSearchForm 	= $('#ahSearchForm'),
-	let searchArea = $('#search-area');
-
-	$('li.searchAnchor a').on('click', (e) => {
-		e.preventDefault();
-
-		searchArea.slideToggle()
-	});
-
-})(jQuery);
+Validator.updateDictionary({
+    fr: {
+        messages
+    }
+});
 
 // // Vue Bootstraping
 

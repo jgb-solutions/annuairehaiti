@@ -9,10 +9,10 @@ Route::get('recherche', ['as' => 'search','uses' => 'SearchController@index']);
 Route::get('entreprises', ['as'=>'enterprises.index','uses'=>'EnterprisesController@index']);
 Route::get('ajouter/entreprise', ['as'=>'enterprise.create','uses'=>'EnterprisesController@getCreateForm']);
 Route::post('ajouter/entreprise', ['as'=>'enterprise.create','uses'=>'EnterprisesController@create']);
-Route::get('entreprise/{slug}/{id}', ['as' => 'enterprise.show','uses' => 'EnterprisesController@show']);
+Route::get('entreprise/{slug}', ['as' => 'enterprise.show','uses' => 'EnterprisesController@show']);
 Route::get('modifier/entreprise/{enterprise}', ['as' => 'enterprise.edit','uses' => 'EnterprisesController@getEditForm']);
 Route::put('modifier/entreprise/{enterprise}', ['as' => 'enterprise.edit','uses' => 'EnterprisesController@update']);
-Route::delete('entreprise/{id}', ['as' => 'enterprise.delete','uses' => 'EnterprisesController@destroy']);
+Route::delete('entreprise/{enterprise}', ['as' => 'enterprise.delete','uses' => 'EnterprisesController@destroy']);
 
 // Categories
 Route::get('categories', ['as'=>'categories','uses'=>'CategoriesController@index']);

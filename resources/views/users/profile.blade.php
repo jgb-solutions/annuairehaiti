@@ -40,13 +40,16 @@
                                 </a>
                             </td>
                             <td>
-                                <a
-                                    href="{{ $enterprise->deleteUrl }}"
-                                    class="btn btn-danger"
-                                    onclick="return confirm('Êtes-vous sûr?')"
-                                    title="Effacer la catégorie {{ $enterprise->name }}">
-                                    <i class="fa fa-trash"></i>
-                                </a>
+                                <form method="POST" action="{{ $enterprise->deleteUrl }}">
+                                    {{ csrf_field() }}
+                                    {{ method_field('DELETE') }}
+                                    <button type="submit"
+                                        class="btn btn-danger"
+                                        onclick="return confirm('Êtes-vous sûr?')"
+                                        title="Effacer la catégorie {{ $enterprise->name }}">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                     @endforeach
