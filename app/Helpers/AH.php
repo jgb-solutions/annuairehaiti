@@ -60,7 +60,7 @@ class AH
 			return asset($relativeUrl);
 		}
 
-		$cdnUrl = 'https://cache.annuairehaiti.com';
+		$cdnUrl = 'https://annuairehaiti.com';
 
 		return url($cdnUrl . $relativeUrl);
 	}
